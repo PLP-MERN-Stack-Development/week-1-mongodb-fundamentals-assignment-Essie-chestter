@@ -16,6 +16,7 @@ If you received these files as part of a project, place insert_books.js in your 
 Navigate to your project directory in your terminal and install the MongoDB Node.js driver:
 npm install mongodb
 
+
 3. Run the Insertion Script
 Execute the insert_books.js script to populate your MongoDB instance with sample book data. This script will automatically create the plp_bookstore database and the books collection if they don't already exist.
 node insert_books.js
