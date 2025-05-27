@@ -4,10 +4,13 @@
 const { MongoClient } = require('mongodb');
 
 // Connection URI (replace with your MongoDB connection string if using Atlas)
-const uri = 'mongodb://localhost:27017';
+const uri = 'mongodb+srv://<username>:<password>@clusterX.mongodb.net/';
+
+//authentication 
+const uri = 'mongodb://username:password@localhost:27017';
 
 // Database and collection names
-const dbName = 'plp_bookstore';
+const dbName = 'plp_bookstore'; // Case-sensitive!
 const collectionName = 'books';
 
 // Sample book data
@@ -134,6 +137,19 @@ const books = [
   }
 ];
 
+//dropping the collection before inserting
+await collection.drop();
+
+//validating documents before insertion
+
+const isValidBook = (book) => {
+  return typeof book.price === 'number' && book.title !== undefined;
+};
+if (!books.every(isValidBook)) {
+  throw new Error('Invalid book data');
+}
+
+
 // Function to insert books into MongoDB
 async function insertBooks() {
   const client = new MongoClient(uri);
@@ -196,3 +212,20 @@ insertBooks().catch(console.error);
  * 5. Find in-stock books:
  *    db.books.find({ in_stock: true })
  */ 
+
+
+//Error handling for async operations 
+try {
+  await client.connect();
+  // ... rest of the code ...
+} catch (err) {
+  console.error('Detailed error:', err.stack); // Log full error stack
+}
+
+// testing connection
+await client.connect();
+console.log('Pinging server...');
+await client.db().admin().ping(); // Throws error if connection fails
+
+//log intermediate steps
+console.log('Database list:', await client.db().admin().listDatabases());
